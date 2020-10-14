@@ -49,10 +49,11 @@ int state_information = 0;
 int time = 0;
 int memory = 0;
 int command_line = 0;
+char result[255] = "";
 char *pid = "1";
 if(argc > 2) {
     handle_args(argc, argv, process_information, state_information, time, memory, command_line, pid);
-    parse(process_information, pid, state_information, time, memory, command_line);
+    parse(result, process_information, pid, state_information, time, memory, command_line);
 } else {
     printf("Error: A pid value must be selected.");
     exit(0);
