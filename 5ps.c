@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <fps.h>
+#include "fps.h"
 /*
 Authors: Nathaniel Harder, Brendan Embrey
 Assignment Number: 1
@@ -49,7 +49,7 @@ int state_information = 0;
 int time = 0;
 int memory = 0;
 int command_line = 0;
-char *pid = "";
+char *pid = "1";
 if(argc > 2) {
     handle_args(argc, argv, process_information, state_information, time, memory, command_line, pid);
     parse(process_information, pid, state_information, time, memory, command_line);
