@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <fps.h>
 /*
 Authors: Nathaniel Harder, Brendan Embrey
 Assignment Number: 1
@@ -43,7 +44,6 @@ int handle_args(int argc, char *argv[], int process_information, int state_infor
 
 
 int main(int argc, char *argv[]) {
-   /* my first program in C */
 int process_information = 0;
 int state_information = 0;
 int time = 0;
@@ -52,7 +52,7 @@ int command_line = 0;
 char *pid = "";
 if(argc > 2) {
     handle_args(argc, argv, process_information, state_information, time, memory, command_line, pid);
-    //parse(process_information, pid, state_information, time, memory, command_line);
+    parse(process_information, pid, state_information, time, memory, command_line);
 } else {
     printf("Error: A pid value must be selected.");
     exit(0);
