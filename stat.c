@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "fps.h"
 #include <sys/types.h>
 #include "dirent.h"
 #include <unistd.h>
@@ -15,7 +14,6 @@ Name of this file: stat.c
 Description of the program:
 */
 
-
 void format_time(char *time_string, char *utime, char *stime) {
     int l_utime = strtol(utime, NULL, 10);
     int l_stime = strtol(stime, NULL, 10);
@@ -27,13 +25,20 @@ void format_time(char *time_string, char *utime, char *stime) {
     sprintf(time_string, "%02d:%02d:%02d", hours, minutes, seconds);
 }
 
+void cut_newline(char *data_string) {
+    int last = strlen(data_string) - 1;
+    if(data_string[last] == '\n') {
+        data_string[last] = '\0';
+    }
+}
+
 
 void read_data(char *result_string, DIR *dir, struct dirent *d, char *filename, char *data) {
-    char info[1024]; 
+    char info[1024] = "";
     FILE *search;
     if((d = readdir(dir)) != NULL) {
         if(strcmp(d->d_name, filename) != 0) {
-            char command[255] = "";
+            char command[300] = "";
             sprintf(command,  "cut -d \" \" -f %s %s", data, filename);
             search = popen(command, "r");
             while (fgets(info, sizeof(info), search)) {
@@ -41,45 +46,38 @@ void read_data(char *result_string, DIR *dir, struct dirent *d, char *filename, 
             }
         } 
     }
+    cut_newline(result_string);
 }
 
 
 
-char* parse(char *result, int process_information,  char *pid, int state_information, int time, int memory, int command_line) {
+void parse(char *pid, int state_information, int time, int memory, int command_line) {
     DIR *dir;
     struct dirent *d;
-    char state_string[1] = "";
-    char *time_string;
-    char mem_string[255] = "";
-    char cmd_string[255] = "";
-    char utime[255] = "";
-    char stime[255] = "";
-
-    char p_dir[50] = "";
+    char state_string[1];
+    char time_string[8];
+    char mem_string[13];
+    char cmd_string[1024];
+    char utime[8];
+    char stime[8];
+    char p_dir[255];
     sprintf(p_dir, "/proc/%s", pid);
     chdir(p_dir);
     dir = opendir(".");
-    char *search_result; 
     if(state_information == 1) {
         read_data(state_string, dir, d, "stat", "3");
-        strcat(result, state_string);
-        strcat(result, "     ");
     }
     if(time == 1) {
         read_data(utime, dir, d, "stat", "14");
         read_data(stime, dir, d, "stat", "15");
         format_time(time_string, utime, stime);
-        strcat(result, time_string);
-        strcat(result, "     ");
     }
     if(memory == 1) {
         read_data(mem_string, dir, d, "statm", "1");
-        strcat(result, mem_string);
-        strcat(result, "     ");
     }
     if(command_line == 1) {
         read_data(cmd_string, dir, d, "cmdline", "1");
-        strcat(result, cmd_string);
     }
-    return result;
+
+    fprintf(stdout, "%s: %c time=%s sz=%s [%s]\n", pid, state_string[0], time_string, mem_string, cmd_string);
 }
