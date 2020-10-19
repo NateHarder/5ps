@@ -12,7 +12,7 @@ Description of the program:
 */
 
 int handle_args(int argc, char *argv[], int process_information, int state_information, int time, int memory, int command_line, char pid[]) {
-    for(int index = 2; index < argc; index++) {
+    for(int index = 1; index < argc; index++) {
                 switch (argv[index][1]) {
                     case 'p':
                         process_information = 1;
@@ -29,14 +29,14 @@ int handle_args(int argc, char *argv[], int process_information, int state_infor
                     case 'v':
                         memory = 1;
                         break;
-                    
                     default:
                         for(int pid_index = 0; pid_index < strlen(argv[index]); pid_index++) {
                             if(!isdigit(argv[index][pid_index])) {
-                                printf("Error: selected pid is not valid.");
+                                printf("Error: selected pid is not valid.\n");
                                 exit(0);
                             } 
                         }
+
                         pid = argv[index];
                     break;
                 }
@@ -47,7 +47,7 @@ int handle_args(int argc, char *argv[], int process_information, int state_infor
     if(process_information == 1) {
         parse(pid, state_information, time, memory, command_line);
     } else {
-        printf("You must select a PID with the option -p.");
+        printf("You must select a PID with the option -p.\n");
         exit(0);
     }
 }
