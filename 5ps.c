@@ -12,14 +12,18 @@ Description of the program:
 5ps.c takes arguments supplied from the command line and parses them before passing them to the parse function
 in stat.c file to print the disired data. 
 */
-/*
 
-handle_args: takes command line options and interprets data from them before passing them to be parsed.
+/*
+Function Name: handle args
+Input to the method: command line arguments for -p (PID), -s (state), -t (time), -c (command line), -v (memory used), and a pid number, as well as
+boolean values stored as integers for the command line arguments.
+Output(Return value): None. 
+Brief description of the task: takes command line options and interprets data from them before passing them to be parsed.
 */
-int handle_args(int argc, char *argv[], int process_information, int state_information, int time, int memory, int command_line, char pid[]) {
+void handle_args(int argc, char *argv[], int process_information, int state_information, int time, int memory, int command_line, char pid[]) {
     
-    // loop through command line arguments and set a boolean to true if 
-    // the corresponding letter is found.
+    /* loop through command line arguments and set a boolean to true if 
+    the corresponding letter is found. */
     for(int index = 1; index < argc; index++) {
                 switch (argv[index][1]) {
                     case 'p':
@@ -38,7 +42,7 @@ int handle_args(int argc, char *argv[], int process_information, int state_infor
                         memory = 1;
                         break;
                     default:
-                    // If no letters are selected, ensure that the argument is a valid pid.
+                    /* If no letters are selected, ensure that the argument is a valid pid. */
                         for(int pid_index = 0; pid_index < strlen(argv[index]); pid_index++) {
                             if(!isdigit(argv[index][pid_index])) {
                                 // Print an error and exit if invalid.
@@ -51,13 +55,13 @@ int handle_args(int argc, char *argv[], int process_information, int state_infor
                     break;
                 }
     }
-    // If no pid is selected as an argument, default to a pid of 1.
+    /* If no pid is selected as an argument, default to a pid of 1. */
     if(strcmp(pid, "") == 0) {
         pid[0] = '1';
     }
-    // If the argument -p is used and a pid is given, call parse to return the requested data.
+    /* If the argument -p is used and a pid is given, call parse to return the requested data. */
     if(process_information == 1) {
-        parse(pid, state_information, time, memory, command_line);
+        move_to_dir(pid, state_information, time, memory, command_line);
     } else {
         // If -p is not used to specify a pid, give an error and exit.
         printf("You must select a PID with the option -p.\n");
@@ -65,10 +69,11 @@ int handle_args(int argc, char *argv[], int process_information, int state_infor
     }
 }
 
-
-
 /*
-main: sets boolean values to zero, initializes pid to an empty string, and passes them all to handle args.
+Function Name: main
+Input to the method: command line arguments for -p (PID), -s (state), -t (time), -c (command line), -v (memory used), and a pid number.
+Output(Return value): returns 0 if program executes successfully. 
+Brief description of the task: sets boolean values to zero, initializes pid to an empty string, and passes them all to handle args.
 */
 int main(int argc, char *argv[]) {
 
