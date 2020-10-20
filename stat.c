@@ -11,7 +11,9 @@ Authors: Nathaniel Harder, Brendan Embrey
 Assignment Number: 1
 Date of Submission:
 Name of this file: stat.c
-Description of the program:
+Description of the program: 
+stat.c takes information from 5ps.c and searches for data related to a given process
+before printing that information to stdout.
 */
 
 /*
@@ -32,7 +34,6 @@ void format_time(char *time_string, char *utime, char *stime) {
     sprintf(time_string, "%02d:%02d:%02d", hours, minutes, seconds);
 }
 
-
 /*
 cut_newline: removes a newline character from a string if present.
 */
@@ -42,8 +43,6 @@ void cut_newline(char *data_string) {
         data_string[last] = '\0';
     }
 }
-
-
 
 /*
 read_data: Finds a given data point from the /proc/ directory, removes and newlines, and copies the data
@@ -120,10 +119,12 @@ void parse(char *pid, int state_selected, int time_selected, int memory_selected
         format_time(time_string, utime, stime);
         fprintf(stdout, "time=%s ", time_string);
     }
+    // If -v is selected as an argument, find the memory information in line 1 of the statm file and print it.  .
     if(memory_selected == 1) {
         read_data(mem_string, dir, d, "statm", "1");
         fprintf(stdout, "sz=%s ", mem_string);
     }
+    // If -c is selected as an argument, find the command information in line 1 of the cmdline file and print it.  .
     if(command_line_selected == 1) {
         read_data(cmd_string, dir, d, "cmdline", "1");
         fprintf(stdout, "[%s]", cmd_string);
