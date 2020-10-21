@@ -13,7 +13,7 @@
             "request": "launch",
             "target": "./a.out",
             "cwd": "${workspaceRoot}",
-            "arguments": "-s -t -c -v -p",
+            "arguments": "-s -t -c -v -p 20 -b",
             "valuesFormatting": "parseText"
         }
     ]
