@@ -24,10 +24,29 @@ void handle_args(int argc, char *argv[], int process_information, int state_info
     
     /* loop through command line arguments and set a boolean to true if 
     the corresponding letter is found. */
+    int pid_arg;
     for(int index = 1; index < argc; index++) {
+                if(strlen(argv[index]) > 1) {
+                    if (argv[index][2]) {
+                        printf("Error: option % is invalid.\n", argv[index]);
+                        exit(0);
+                    }
+                }
                 switch (argv[index][1]) {
                     case 'p':
                         process_information = 1;
+                        if (argv[index+1]) {
+                            /* If no letters are selected, ensure that the argument is a valid pid. */
+                            for(int pid_index = 0; pid_index < strlen(argv[index+1]); pid_index++) {
+                                if(!isdigit(argv[index+1][pid_index])) {
+                                    // Print an error and exit if invalid.
+                                    printf("Error: invalid PID.\n");
+                                    exit(0);
+                                } 
+                            }
+                            pid = argv[index+1];
+                            pid_arg = index+1;
+                        }
                         break;
                     case 's':
                         state_information = 1;
@@ -42,31 +61,35 @@ void handle_args(int argc, char *argv[], int process_information, int state_info
                         memory = 1;
                         break;
                     default:
-                    /* If no letters are selected, ensure that the argument is a valid pid. */
-                        for(int pid_index = 0; pid_index < strlen(argv[index]); pid_index++) {
-                            if(!isdigit(argv[index][pid_index])) {
+                    
+                        //for(int pid_index = 0; pid_index < strlen(argv[index]); pid_index++) {
+                          //  if(!isdigit(argv[index][pid_index])) {
                                 // Print an error and exit if invalid.
-                                printf("Error: selected pid is not a number.\n");
-                                exit(0);
-                            } 
-                        }
+                            //    printf("Error: invalid input.\n");
+                              //  exit(0);
+                            //} 
+                        //}
                         // If the argument is a number, set the value of pid to the arguement.
-                        pid = argv[index];
+                        
+                        if (index != pid_arg) {
+                            printf("Error: option not recognized.\n");
+                            exit(0);
+                        }
                     break;
                 }
     }
     /* If no pid is selected as an argument, default to a pid of 1. */
-    if(strcmp(pid, "") == 0) {
-        pid[0] = '1';
-    }
+
     /* If the argument -p is used and a pid is given, call parse to return the requested data. */
-    if(process_information == 1) {
-        move_to_dir(pid, state_information, time, memory, command_line);
+    if(process_information == 0) {
+        pid[0] = '1';
     } else {
-        // If -p is not used to specify a pid, give an error and exit.
-        printf("You must select a PID with the option -p.\n");
-        exit(0);
+        if (strcmp(pid, "") == 0) {
+            printf("A PID must be selected with option -p.\n");
+            exit(0);
+        }
     }
+    move_to_dir(pid, state_information, time, memory, command_line);
 }
 
 /*
