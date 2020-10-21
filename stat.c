@@ -72,9 +72,10 @@ Output(Return value): None.
 Brief description of the task: finds a given data point from the /proc/ directory, removes any newlines, and copies the data
 into a given result_string string. 
 */
-void read_data(char *result_string, DIR *dir, struct dirent *d, char *filename, char *field) {
+void read_data(char *result_string, DIR *dir, char *filename, char *field) {
     
     char info[1024] = "";
+    struct dirent *d;
     FILE *search;
     // Use the readdir and strcmp function to check that the given file exists.
     if((d = readdir(dir)) != NULL) {
@@ -102,7 +103,7 @@ for handling command line arguments.
 Output(Return value): None.
 Brief description of the task: decides to search for and prints values if they have been requested by command line arguments.
 */
-void search_data(DIR *dir, struct dirent *d, int state_selected, int time_selected, int memory_selected, int command_line_selected) {
+void search_data(DIR *dir, int state_selected, int time_selected, int memory_selected, int command_line_selected) {
     char state_string[1];
     char time_string[8]; 
     char mem_string[13];
@@ -111,28 +112,28 @@ void search_data(DIR *dir, struct dirent *d, int state_selected, int time_select
     char stime[8];
     /* If -s is selected as an argument, find the state information in field 3 of the stat file and print. */
     if(state_selected == 1) {
-        read_data(state_string, dir, d, "stat", "3");
+        read_data(state_string, dir, "stat", "3");
         printf("%s ", state_string);
     }
     /* If -t is selected as an argument, find the utime and stime information in fields 14 and 15 of the stat file,
     then format them in HH:MM:SS format and print. */
     if(time_selected == 1) {
-        read_data(utime, dir, d, "stat", "14");
-        read_data(stime, dir, d, "stat", "15");
+        read_data(utime, dir, "stat", "14");
+        read_data(stime, dir, "stat", "15");
         format_time(time_string, utime, stime);
         printf("time=%s ", time_string);
     }
     /* If -v is selected as an argument, find the memory information in line 1 of the statm file and print it. */  
     if(memory_selected == 1) {
-        read_data(mem_string, dir, d, "statm", "1");
+        read_data(mem_string, dir, "statm", "1");
         printf("sz=%s ", mem_string);
     }
     /* If -c is selected as an argument, find the command information in line 1 of the cmdline file and print it. */
     if(command_line_selected == 1) {
-        read_data(cmd_string, dir, d, "cmdline", "1");
+        read_data(cmd_string, dir, "cmdline", "1");
         // Check if cmdline file returns empty, and read command from the second field of stat file if so.
         if (cmd_string[0] == '\0') {
-            read_data(cmd_string, dir, d, "stat", "2");
+            read_data(cmd_string, dir, "stat", "2");
             replace_paren(cmd_string);
         } else {
             printf("[%s]", cmd_string);
@@ -152,7 +153,7 @@ with integer arguments used as booleans.
 void move_to_dir(char *pid, int state_selected, int time_selected, int memory_selected, int command_line_selected) {
     DIR *dir;
     /* Declare various strings used to handle the data points that are being requested. */
-    struct dirent *d;
+
     char p_dir[255];
     sprintf(p_dir, "/proc/%s", pid);
     /* Open the /proc/[pid] directory based on the pid number chosen. Exit if no process found. */
@@ -165,5 +166,5 @@ void move_to_dir(char *pid, int state_selected, int time_selected, int memory_se
     chdir(p_dir); // Change current directory to process directory.
     printf("%s: ", pid);
     
-    search_data(dir,d, state_selected, time_selected, memory_selected, command_line_selected);
+    search_data(dir, state_selected, time_selected, memory_selected, command_line_selected);
 }

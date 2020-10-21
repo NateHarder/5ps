@@ -4,4 +4,4 @@
 void move_to_dir(char *pid, int state_information, int time, int memory, int command_line);
 
 
-#endif
+#endif // _STAT_H
