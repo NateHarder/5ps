@@ -1,0 +1,11 @@
+To compile and run this program, type:
+
+gcc -o 5ps.c stat.c 5ps
+
+Then run it using the format
+
+./5ps -p [PID] -s -t -c -v
+
+Where [PID] is a PID number of a process, and the options -s, -t, -c, -v are option arguments to display process state, time, the command line for the process, and the memory used.
+
+All features are described as in the lab handout.
