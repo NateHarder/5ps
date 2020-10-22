@@ -20,7 +20,8 @@ Brief description of the task: checks to make sure supplied
 argument has no extra characters.
 */
 void check_arg(char *argument) {
-    /*If an invalid option is selected, print an error and exit.*/
+    /*If argument of size two or more is selected, and it isn't a PID number,
+    print an error and exit.*/
     if(argument[0] == '-' && strlen(argument) > 2) {
         argument++; // Move argument pointer to the invalid options in string.
         printf("%s not recognized .\n", argument);
@@ -39,7 +40,7 @@ void check_pid_valid(char *pid) {
     for(int pid_index = 0; pid_index < strlen(pid); pid_index++) {
         if(!isdigit(pid[pid_index])) {
             // Print an error and exit if invalid.
-            printf("Error: PID %s is invalid.\n", pid);
+            printf("Error: invalid PID.\n");
             exit(0);
         } 
     } 
@@ -48,21 +49,28 @@ void check_pid_valid(char *pid) {
 /*
 Function Name: handle_pid
 Input to the method: pid string and argument boolean values as integers.
-Brief description of the task: checks to make sure -p argument is use
+Brief description of the task: checks to make sure -p argument is used, at
+least one other argument is used
 and pid is selected before continuing.
 */
 void handle_pid(char *pid, int proc, int state, int time, int mem, int cmd) {
     /* If no pid is selected as an argument, default to a pid of 1. */
     if(proc == 0) {
-        pid[0] = '1';
+        pid = "1\0";
     } else {
     /* If the argument -p is used and no pid is given, exit 
     with an error message. */
         if (strcmp(pid, "") == 0) {
-            printf("A PID must be selected with option -p.\n");
+            printf("Error: invalid PID.\n");
             exit(0);
         }
     }
+    /* If only -p is selected, print an error. */
+    if (state == 0 && time == 0 && mem == 0 && cmd == 0) {
+        printf("Please select at least 1 more option:\n-s,-t, or -v.\n");
+        exit(0);
+    }
+
     // Otherwise, continue to search for the data.
     move_to_dir(pid, state, time, mem, cmd);
 }

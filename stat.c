@@ -36,8 +36,9 @@ void format_time(char *time_string, char *utime, char *stime) {
     minutes have been counted. Then print the data to time_string. */
     int mins = secs / 60;
     int hrs = mins / 60;
-    secs = secs % 60;
-    sprintf(time_string, "%02d:%02d:%02d", hrs, mins, secs);
+    int new_mins = mins % 60;
+    int new_secs = secs % 60;
+    sprintf(time_string, "%02d:%02d:%02d", hrs, new_mins, new_secs);
 }
 
 /*
@@ -97,7 +98,7 @@ void read_data(char *result_string, DIR *dir, char *filename, char *field) {
 }
 
 /*
-Function Name: search_data
+Function Name: search_datassss
 Input to the method: DIR and dirent variables for navigating a directory as 
 well as boolean values stored as integers for handling command line arguments.
 Output(Return value): None.
@@ -172,8 +173,8 @@ void move_to_dir(char *pid, int state, int time, int memory, int cmdline) {
         printf("Error: no process with selected PID.\n");
         exit(0);
     }
-    chdir(p_dir); // Change current directory to process directory.
     printf("%s: ", pid);
+    chdir(p_dir); // Change current directory to process directory.
     // Call search_data to begin finding data in /proc/.
     search_data(dir, state, time, memory, cmdline);
 }

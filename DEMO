@@ -1,0 +1,15 @@
+
+
+[n@dell CS-451-L1]$ ./5ps -s -t -c -v
+1: S time=00:00:01 sz=46215 [/sbin/init]
+[n@dell CS-451-L1]$ ./5ps -p -s -t -c -v
+Error: invalid PID.
+[n@dell CS-451-L1]$ ./5ps -p 20 -s -t -c -v
+20: S time=00:00:00 sz=0 [rcuc/1]
+[n@dell CS-451-L1]$ ./5ps -p 20 -s
+20: S 
+[n@dell CS-451-L1]$ ./5ps -p 20
+Please select at least 1 more option:
+-s,-t, or -v.
+[n@dell CS-451-L1]$ ./5ps -p 904 -s -t -c -v
+904: R time=03:11:51 sz=270263 [/usr/lib/Xorg]
