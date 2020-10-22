@@ -11,9 +11,6 @@ Authors: Nathaniel Harder, Brendan Embrey
 Assignment Number: 1
 Date of Submission: 10/21/20
 Name of this file: stat.c
-Description of the program: 
-stat.c takes information from 5ps.c and searches for data related to a given 
-process before printing that information to stdout.
 */
 
 /*
@@ -36,7 +33,9 @@ void format_time(char *time_string, char *utime, char *stime) {
     minutes have been counted. Then print the data to time_string. */
     int mins = secs / 60;
     int hrs = mins / 60;
-    int new_mins = mins % 60;
+    /* Get new_mins and new_secs values by dividing mod 60 to
+    fit in the HH:MM:SS format.*/
+    int new_mins = mins % 60; 
     int new_secs = secs % 60;
     sprintf(time_string, "%02d:%02d:%02d", hrs, new_mins, new_secs);
 }

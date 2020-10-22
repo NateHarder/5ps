@@ -1,4 +1,9 @@
-
+/*
+Authors: Nathaniel Harder, Brendan Embrey
+Assignment Number: 1
+Date of Submission: 10/21/20
+Name of this file: DEMO
+*/
 
 [n@dell CS-451-L1]$ ./5ps -s -t -c -v
 1: S time=00:00:01 sz=46215 [/sbin/init]
@@ -11,5 +16,5 @@ Error: invalid PID.
 [n@dell CS-451-L1]$ ./5ps -p 20
 Please select at least 1 more option:
 -s,-t, or -v.
-[n@dell CS-451-L1]$ ./5ps -p 904 -s -t -c -v
-904: R time=03:11:51 sz=270263 [/usr/lib/Xorg]
+[n@dell CS-451-L1]$ ./5ps -p 1158 -s -t -c -v
+1158: S time=00:00:00 sz=5208 [/usr/lib/systemd/systemd]

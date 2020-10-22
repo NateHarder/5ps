@@ -8,9 +8,10 @@ Authors: Nathaniel Harder, Brendan Embrey
 Assignment Number: 1
 Date of Submission: 10/21/20
 Name of this file: 5ps.c
-Description of the program:
-5ps.c takes arguments supplied from the command line and parses them before 
-passing them to the parse function in stat.c file to print the desired data. 
+Description of the program: 5ps.c takes arguments supplied from the command 
+line and parses them before passing them to the parse function in stat.c file
+to print the desired data. stat.c takes information from 5ps.c and searches for
+data related to a given process before printing that information to stdout.
 */
 
 /*

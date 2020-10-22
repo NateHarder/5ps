@@ -1,11 +1,32 @@
+/*
+Authors: Nathaniel Harder, Brendan Embrey
+Assignment Number: 1
+Date of Submission: 10/21/20
+Name of this file: DEMO
+*/
+
 To compile and run this program, type:
 
+gcc -c 5ps.c
+gcc -c stat.c
+gcc -o 5ps 5ps.o stat.o
+
+or
+
 gcc -o 5ps.c stat.c 5ps
+
+in a terminal, press enter,
 
 Then run it using the format
 
 ./5ps -p [PID] -s -t -c -v
 
-Where [PID] is a PID number of a process, and the options -s, -t, -c, -v are option arguments to display process state, time, the command line for the process, and the memory used.
+again pressing enter,
 
-All features are described as in the lab handout.
+[PID] is a PID number of a process, and the options -s, -t, -c, -v are 
+option arguments to display process state, time, the command line for the 
+process, and the memory used.
+
+Limitations: The program requires the corresponding fields for state, time, 
+memory, and command line to be in the normal positions. Changing these
+will cause the output to be incorrect. 
